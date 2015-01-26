@@ -67,7 +67,7 @@
           (-> game
               (replace-clump selected)
               (assoc :score (inc score)))
-          (assoc game :score (dec score))))
+          (assoc game :score (dec score) :selected #{})))
       game)))
 
 (defn over? [game]
