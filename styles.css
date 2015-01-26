@@ -1,0 +1,163 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: #000011;
+  color: #fcfcff;
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.game {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-flow: column;
+}
+
+.controls {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+}
+
+.board {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  margin: 0 auto;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+}
+
+@media only screen and (orientation: portrait) {
+  .board {
+    max-width: calc(25vh / 1.618 * 3);
+  }
+}
+
+.card-container {
+  display: inline-block;
+  height: calc(25vw / 1.618);
+  margin: 0;
+  padding: 0.5vw;
+  width: 25vw;
+  -webkit-perspective: 1000;
+}
+
+@media only screen and (orientation: portrait) {
+  .card-container {
+    height: 25vh;
+    padding: 0.5vw;
+    width: calc(25vh / 1.618);
+  }
+}
+
+.card {
+  display: inline-block;
+  height: 100%;
+  -webkit-perspective: 1000;
+  position: relative;
+  -webkit-transform-style: preserve-3d;
+  width: 100%;
+}
+.card.flip {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  transition: 0.5s;
+}
+
+.face {
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  background-color: #fcfcff;
+  border: 1px solid #c9c9cc;
+  border-radius: 5px;
+  display: -webkit-flex;
+  display: flex;
+  height: 100%;
+  -webkit-justify-content: center;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 100%;
+}
+
+@media only screen and (orientation: portrait) {
+  .face {
+    -webkit-flex-flow: column;
+    flex-flow: column;
+  }
+}
+
+.face.back {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+.face.front {
+  z-index: 1;
+}
+.card.flip .face.front {
+  z-index: 0;
+}
+.card.blank.flip .face.back {
+  visibility: hidden;
+}
+
+.card.selected .face {
+  background-color: #ffff99;
+}
+.card.highlight .face {
+  background-color: #ccffcc;
+}
+.card.selected.highlight .face {
+  background-color: #e6ffb3;
+}
+
+svg {
+  height: calc(25vw / 4);
+  padding: 0.3vw;
+  width: calc(25vw / 4);
+}
+@media only screen and (orientation: portrait) {
+  svg {
+    height: calc(25vh / 4);
+    padding: 0.3vh;
+    width: calc(25vh / 4);
+  }
+}
+.blank {
+  visibility: hidden;
+}
+.red {
+  fill: rgb(153, 51, 51);
+  stroke: rgb(153, 51, 51);
+  stroke-width: 10;
+}
+.green {
+  fill: rgb(51, 153, 51);
+  stroke: rgb(51, 153, 51);
+  stroke-width: 10;
+}
+.blue {
+  fill: rgb(51, 51, 153);
+  stroke: rgb(51, 51, 153);
+  stroke-width: 10;
+}
+.solid {
+  fill-opacity: 1.0;
+}
+.striped {
+  fill-opacity: 0.5;
+}
+.empty {
+  fill-opacity: 0.0;
+}
