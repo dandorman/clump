@@ -15,7 +15,7 @@
   :release
   {:target :browser
    :output-dir "public/js"
-   :asset-path "/js"
+   :asset-path "js"
    :modules {:main {:init-fn clump.core/init
                     :entries [clump.core]}}
    :compiler-options {:optimizations :advanced}}}}
