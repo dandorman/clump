@@ -82,8 +82,7 @@
                                        "selected"  (selected traits)
                                        "highlight" ((:hint @game-state) traits)
                                        "flip"      (drawn traits)})
-                  :on-click #(card-selected! traits)
-                  :on-touch-end #(card-selected! traits)}]
+                  :on-click #(card-selected! traits)}]
            faces)]))
 
 (defn board []
