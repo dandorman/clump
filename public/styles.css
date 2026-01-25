@@ -1,125 +1,128 @@
+:root {
+  --bg-dark: #000011;
+  --text-light: #fcfcff;
+  --card-bg: #fcfcff;
+  --card-border: #c9c9cc;
+  --selected: #ffff99;
+  --highlight: #ccffcc;
+  --selected-highlight: #e6ffb3;
+  --red: rgb(153, 51, 51);
+  --green: rgb(51, 153, 51);
+  --blue: rgb(51, 51, 153);
+  --golden-ratio: 1.618;
+}
+
 * {
   box-sizing: border-box;
 }
 
 html, body {
-  background-color: #000011;
-  color: #fcfcff;
-  font-family: Helvetica, Arial, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  font-family: system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
 }
 
 .game {
-  display: -webkit-flex;
   display: flex;
-  -webkit-flex-direction: column;
-  flex-flow: column;
+  flex-direction: column;
 }
 
 .controls {
-  display: -webkit-flex;
   display: flex;
-  -webkit-justify-content: space-around;
   justify-content: space-around;
 }
 
 .board {
-  display: -webkit-flex;
   display: flex;
-  -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
-  margin: 0 auto;
-  -webkit-justify-content: space-around;
   justify-content: space-around;
+  margin: 0 auto;
 }
 
-@media only screen and (orientation: portrait) {
+@media (orientation: portrait) {
   .board {
-    max-width: calc(25vh / 1.618 * 3);
+    max-width: calc(25vh / var(--golden-ratio) * 3);
   }
 }
 
 .card-container {
   display: inline-block;
-  height: calc(25vw / 1.618);
+  height: calc(25vw / var(--golden-ratio));
   margin: 0;
   padding: 0.5vw;
   width: 25vw;
-  -webkit-perspective: 1000;
+  perspective: 1000px;
 }
 
-@media only screen and (orientation: portrait) {
+@media (orientation: portrait) {
   .card-container {
     height: 25vh;
     padding: 0.5vw;
-    width: calc(25vh / 1.618);
+    width: calc(25vh / var(--golden-ratio));
   }
 }
 
 .card {
   display: inline-block;
   height: 100%;
-  -webkit-perspective: 1000;
   position: relative;
-  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
   width: 100%;
 }
+
 .card.flip {
-  -webkit-transform: rotateY(180deg);
   transform: rotateY(180deg);
-  transition: 0.5s;
+  transition: transform 0.5s;
 }
 
 .face {
-  -webkit-align-items: center;
   align-items: center;
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  background-color: #fcfcff;
-  border: 1px solid #c9c9cc;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 5px;
-  display: -webkit-flex;
   display: flex;
   height: 100%;
-  -webkit-justify-content: center;
+  inset: 0;
   justify-content: center;
-  left: 0;
   position: absolute;
   text-align: center;
-  top: 0;
-  width: 100%;
 }
 
-@media only screen and (orientation: portrait) {
+@media (orientation: portrait) {
   .face {
-    -webkit-flex-flow: column;
     flex-flow: column;
   }
 }
 
 .face.back {
-  -webkit-transform: rotateY(180deg);
   transform: rotateY(180deg);
 }
+
 .face.front {
   z-index: 1;
 }
+
 .card.flip .face.front {
   z-index: 0;
 }
+
 .card.blank.flip .face.back {
   visibility: hidden;
 }
 
 .card.selected .face {
-  background-color: #ffff99;
+  background-color: var(--selected);
 }
+
 .card.highlight .face {
-  background-color: #ccffcc;
+  background-color: var(--highlight);
 }
+
 .card.selected.highlight .face {
-  background-color: #e6ffb3;
+  background-color: var(--selected-highlight);
 }
 
 svg {
@@ -127,37 +130,45 @@ svg {
   padding: 0.3vw;
   width: calc(25vw / 4);
 }
-@media only screen and (orientation: portrait) {
+
+@media (orientation: portrait) {
   svg {
     height: calc(25vh / 4);
     padding: 0.3vh;
     width: calc(25vh / 4);
   }
 }
+
 .blank {
   visibility: hidden;
 }
+
 .red {
-  fill: rgb(153, 51, 51);
-  stroke: rgb(153, 51, 51);
+  fill: var(--red);
+  stroke: var(--red);
   stroke-width: 10;
 }
+
 .green {
-  fill: rgb(51, 153, 51);
-  stroke: rgb(51, 153, 51);
+  fill: var(--green);
+  stroke: var(--green);
   stroke-width: 10;
 }
+
 .blue {
-  fill: rgb(51, 51, 153);
-  stroke: rgb(51, 51, 153);
+  fill: var(--blue);
+  stroke: var(--blue);
   stroke-width: 10;
 }
+
 .solid {
-  fill-opacity: 1.0;
+  fill-opacity: 1;
 }
+
 .striped {
   fill-opacity: 0.5;
 }
+
 .empty {
-  fill-opacity: 0.0;
+  fill-opacity: 0;
 }
