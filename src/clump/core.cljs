@@ -75,7 +75,7 @@
   (let [faces (map (fn [[s t]] [face s t])
                    (zipmap [:front :back]
                            (remove nil? [(drawn traits) traits])))]
-    [:div {:class "card-container"}
+    [:div.card-container
      (into [:div {:class (class-names {"card"      true
                                        "blank"     (= :blank (:color traits))
                                        "selected"  (selected traits)
@@ -87,16 +87,17 @@
 
 (defn board []
   (let [{:keys [board selected drawn]} @game-state]
-    (into [:div {:class "board"}]
-          (for [traits board]
-            ^{:key (hash traits)}
+    (into [:div.board]
+          (for [idx (range (count board))
+                :let [traits (nth board idx)]]
+            ^{:key idx}
             [card {:traits traits
                    :selected selected
                    :drawn drawn}]))))
 
 (defn game-ui []
-  [:div {:class "game"}
-   [:div {:class "controls"}
+  [:div.game
+   [:div.controls
     [:p (str "Score: " (:score @game-state))]
     [:button {:on-click no-clumps!} "Clumpless?"]
     [:button {:on-click hint!} "Hint"]

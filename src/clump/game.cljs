@@ -19,12 +19,16 @@
 
 (defn draw [game]
   (cond
+    ; we have extra cards on the board, so use those to backfill missing slots
+    ; TODO: right now this handles only 3 extra cards
     (seq (drop 12 (:board game)))
     (assoc game :draw (vec (drop 12 (:board game))))
 
+    ; there's at least one card left in the deck
     (seq (take 3 (:deck game)))
     (assoc game :draw (vec (take 3 (:deck game))) :deck (vec (drop 3 (:deck game))))
 
+    ; the deck is empty, fill space with "blank" cards
     :else
     (assoc game :draw (vec (repeatedly 3 (constantly blank))))))
 
