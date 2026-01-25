@@ -33,8 +33,9 @@
 
 (defn hint! []
   (if-let [clump (game/hint @game-state)]
-    (swap! game-state update :board
-           (fn [board] (map #(if ((set clump) %) (assoc % :highlight true) %) board)))
+    (swap! game-state #(-> %
+                           (assoc :hint (set clump))
+                           (assoc :selected #{})))
     (alert "No clumps?")))
 
 (defn card-selected! [card]
@@ -79,7 +80,7 @@
      (into [:div {:class (class-names {"card"      true
                                        "blank"     (= :blank (:color traits))
                                        "selected"  (selected traits)
-                                       "highlight" (:highlight traits)
+                                       "highlight" ((:hint @game-state) traits)
                                        "flip"      (drawn traits)})
                   :on-click #(card-selected! traits)
                   :on-touch-end #(card-selected! traits)}]

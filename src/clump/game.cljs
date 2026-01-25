@@ -40,6 +40,7 @@
     :deck (vec (drop 12 deck))
     :board (vec (take 12 deck))
     :selected #{}
+    :hint #{}
     :drawn {}}))
 
 (defn hint [game]
@@ -64,12 +65,14 @@
 
 (defn card-selected [game card]
   (let [game (assoc (toggle-card game card) :drawn {})
-        selected (:selected game)]
+        selected (:selected game)
+        game (cond-> game (not ((:hint game) card)) (assoc :hint #{}))]
     (if (= 3 (count selected))
       (let [score (:score game)]
         (if (clump? (keys traits) selected)
           (-> game
               (replace-clump selected)
+              (assoc :hint #{})
               (assoc :score (inc score)))
           (assoc game :score (dec score) :selected #{})))
       game)))
