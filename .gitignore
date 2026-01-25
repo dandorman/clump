@@ -1,9 +1,5 @@
-pom.xml
-*jar
-/lib/
-/classes/
-/out/
-/target/
-.lein-deps-sum
-.lein-repl-history
-.lein-plugins/
+.shadow-cljs/
+.cpcache/
+.nrepl-port
+node_modules/
+/public/js/
