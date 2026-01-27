@@ -62,4 +62,4 @@ A valid **clump** is 3 cards where, for each trait, the values are either:
 
 ## License
 
-Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
+Copyright (c) 2026 Dan Dorman. Released under the [MIT License](LICENSE).
