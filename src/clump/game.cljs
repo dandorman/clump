@@ -1,5 +1,6 @@
 (ns clump.game
-  (:require [clump.utils :refer [combinations map-combinations]]
+  (:require [clojure.set :as set]
+            [clump.utils :refer [combinations map-combinations]]
             [clump.rules :refer [clump?]]))
 
 (def traits {:shape  [:circle :square :triangle]
@@ -19,14 +20,21 @@
 
 (defn draw [game]
   (cond
-    ; we have extra cards on the board, so use those to backfill missing slots
-    ; TODO: right now this handles only 3 extra cards
-    (seq (drop 12 (:board game)))
-    (assoc game :draw (vec (drop 12 (:board game))))
+    (< 3 (count (:deck game)))
+    (let [shuffled (shuffle (:deck game))
+          next-three (take 3 shuffled)
+          future-board (-> (:board game)
+                           set
+                           (set/difference (set (:selected game)))
+                           (concat next-three))]
+      (if (seq (clumps future-board))
+        (assoc game :draw (vec next-three)
+                    :deck (vec (drop 3 shuffled)))
+        (recur game)))
 
-    ; there's at least one card left in the deck
-    (seq (take 3 (:deck game)))
-    (assoc game :draw (vec (take 3 (:deck game))) :deck (vec (drop 3 (:deck game))))
+    (= 3 (count (:deck game)))
+    (assoc game :draw (vec (take 3 (:deck game)))
+                :deck (vec (drop 3 (:deck game))))
 
     ; the deck is empty, fill space with "blank" cards
     :else
@@ -34,14 +42,19 @@
 
 (defn new-game
   ([]
-   (new-game (shuffle deck)))
+   (new-game deck))
   ([deck]
-   {:score 0
-    :deck (vec (drop 12 deck))
-    :board (vec (take 12 deck))
-    :selected #{}
-    :hint #{}
-    :drawn {}}))
+   (let [shuffled (shuffle deck)
+         board (take 12 shuffled)
+         deck (drop 12 shuffled)]
+     (if (seq (clumps board))
+       {:score 0
+        :deck (vec deck)
+        :board (vec board)
+        :selected #{}
+        :hint #{}
+        :drawn {}}
+       (recur deck)))))
 
 (defn hint [game]
   (first (clumps (:board game))))

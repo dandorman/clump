@@ -23,20 +23,12 @@
     (swap! game-history pop)
     (reset! game-state (last @game-history))))
 
-(defn no-clumps! []
-  (if-let [clump (first (game/clumps (:board @game-state)))]
-    (do
-      (swap! game-state update :score dec)
-      (alert "Sorry, but there IS a clump."))
-    (let [drawn (game/draw @game-state)]
-      (swap! game-state #(assoc (dissoc drawn :draw) :board (concat (:board drawn) (:draw drawn)))))))
-
 (defn hint! []
-  (if-let [clump (game/hint @game-state)]
+  (let [clump (game/hint @game-state)]
+    (assert clump "There must be a clump.")
     (swap! game-state #(-> %
                            (assoc :hint (set clump))
-                           (assoc :selected #{})))
-    (alert "No clumps?")))
+                           (assoc :selected #{})))))
 
 (defn card-selected! [card]
   (swap! game-state #(-> (game/card-selected % card)
@@ -99,7 +91,6 @@
   [:div.game
    [:div.controls
     [:p (str "Score: " (:score @game-state))]
-    [:button {:on-click no-clumps!} "Clumpless?"]
     [:button {:on-click hint!} "Hint"]
     [:button {:on-click undo!} "Undo"]
     [:button {:on-click new-game!} "New Game"]]
