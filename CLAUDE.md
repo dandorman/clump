@@ -127,7 +127,6 @@ The GitHub Actions workflow (`.github/workflows/deploy.yml`):
 
 ## Notes for AI Assistants
 
-- The README.md is outdated (references old lein workflow) - shadow-cljs is the current build system
 - All game logic is pure functional - no side effects in `game.cljs` or `rules.cljs`
 - The `init` function is called both on page load and after hot reload
 - SVG shapes are rendered inline with dynamic fill opacity for striped/empty/solid variants
