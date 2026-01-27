@@ -90,10 +90,11 @@
 (defn game-ui []
   [:div.game
    [:div.controls
-    [:p (str "Score: " (:score @game-state))]
-    [:button {:on-click hint!} "Hint"]
-    [:button {:on-click undo!} "Undo"]
-    [:button {:on-click new-game!} "New Game"]]
+    [:p.score (str "Score: " (:score @game-state))]
+    [:div.buttons
+     [:button {:on-click hint!} "Hint"]
+     [:button {:on-click undo!} "Undo"]
+     [:button {:on-click new-game!} "New Game"]]]
    [board]])
 
 (defn init []

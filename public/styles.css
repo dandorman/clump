@@ -9,7 +9,7 @@
   --red: rgb(153, 51, 51);
   --green: rgb(51, 153, 51);
   --blue: rgb(51, 51, 153);
-  --golden-ratio: 1.618;
+  --card-ratio: 1.4; /* standard playing card ratio (height/width = 3.5/2.5) */
 }
 
 * {
@@ -22,45 +22,64 @@ html, body {
   font-family: system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
+  overflow: hidden;
+  height: 100%;
 }
 
 .game {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .controls {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.controls .score {
+  margin: 0;
+  font-weight: bold;
+}
+
+.controls .buttons {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .board {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-around;
+  justify-content: center;
+  align-content: center;
   margin: 0 auto;
-}
-
-@media (orientation: portrait) {
-  .board {
-    max-width: calc(25vh / var(--golden-ratio) * 3);
-  }
+  padding: 0.5vw;
+  flex: 1;
 }
 
 .card-container {
   display: inline-block;
-  height: calc(25vw / var(--golden-ratio));
+  width: 24vw;
+  height: calc(24vw * var(--card-ratio));
   margin: 0;
   padding: 0.5vw;
-  width: 25vw;
   perspective: 1000px;
 }
 
 @media (orientation: portrait) {
+  .board {
+    max-width: calc(32vw * 3);
+  }
+
   .card-container {
-    height: 25vh;
-    padding: 0.5vw;
-    width: calc(25vh / var(--golden-ratio));
+    /* Use vh-based sizing to ensure 4 rows fit without scrolling */
+    /* Controls take ~6vh, so cards get ~94vh / 4 rows = ~23vh each */
+    height: 22vh;
+    width: calc(22vh / var(--card-ratio));
+    padding: 0.5vh;
   }
 }
 
@@ -84,17 +103,12 @@ html, body {
   border: 1px solid var(--card-border);
   border-radius: 5px;
   display: flex;
+  flex-flow: column;
   height: 100%;
   inset: 0;
   justify-content: center;
   position: absolute;
   text-align: center;
-}
-
-@media (orientation: portrait) {
-  .face {
-    flex-flow: column;
-  }
 }
 
 .face.back {
@@ -126,17 +140,10 @@ html, body {
 }
 
 svg {
-  height: calc(25vw / 4);
-  padding: 0.3vw;
-  width: calc(25vw / 4);
-}
-
-@media (orientation: portrait) {
-  svg {
-    height: calc(25vh / 4);
-    padding: 0.3vh;
-    width: calc(25vh / 4);
-  }
+  width: 60%;
+  height: auto;
+  aspect-ratio: 1;
+  padding: 2%;
 }
 
 .blank {
