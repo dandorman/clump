@@ -1,46 +1,65 @@
-# clump
+# Clump
 
-FIXME: Write a one-line description of your library/project.
+A card game where players find valid combinations of three cards based on matching rules. Similar to the classic "Set" game.
 
 ## Overview
 
-FIXME: Write a paragraph about the library/project and highlight its goals.
+Clump is a single-page web application built with ClojureScript and React (via Reagent). Players are presented with 12 cards and must find "clumps" - valid combinations of 3 cards where each trait (shape, color, fill, number) is either all the same or all different across the cards.
 
 ## Setup
 
-First-time Clojurescript developers, add the following to your bash .profile:
+Prerequisites:
+- Node.js (v20+)
+- Java (v21+)
 
-    export LEIN_FAST_TRAMPOLINE=y
-    alias cljsbuild="lein trampoline cljsbuild $@"
+Install dependencies:
 
-To avoid compiling ClojureScript for each build, AOT Clojurescript locally in your project with the following:
+```bash
+npm ci
+```
 
-    ./scripts/compile_cljsc
+## Development
 
-Subsequent dev builds can use:
+Start the development server with hot reload:
 
-    lein cljsbuild auto dev
+```bash
+npm run dev
+```
 
-To start a Node REPL (requires rlwrap):
+This starts a dev server at http://localhost:8080 with automatic recompilation on file changes.
 
-    ./scripts/repl
+Start a ClojureScript REPL (while dev server is running):
 
-To get source map support in the Node REPL:
+```bash
+npm run repl
+```
 
-    lein npm install
+## Production Build
 
-Clean project specific out:
+Create an optimized production build:
 
-    lein clean
-     
-Optimized builds:
+```bash
+npm run release
+```
 
-    lein cljsbuild once release     
+Output is written to `public/js/main.js`.
 
-For more info on Cljs compilation, read [Waitin'](http://swannodette.github.io/2014/12/22/waitin/).
+## Deployment
+
+The app automatically deploys to GitHub Pages when changes are pushed to the `main` branch via GitHub Actions.
+
+## Game Rules
+
+Each card has 4 traits with 3 possible values:
+- **Shape**: circle, square, triangle
+- **Color**: red, green, blue
+- **Fill**: empty, striped, solid
+- **Number**: 1, 2, or 3 shapes
+
+A valid **clump** is 3 cards where, for each trait, the values are either:
+- All the same (e.g., all red), OR
+- All different (e.g., red, green, blue)
 
 ## License
 
-Copyright © 2014 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
+Copyright (c) 2026 Dan Dorman. Released under the [MIT License](LICENSE).
