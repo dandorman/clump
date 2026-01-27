@@ -22,7 +22,6 @@ html, body {
   font-family: system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   height: 100%;
 }
 
@@ -30,7 +29,6 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden;
 }
 
 .controls {
@@ -62,21 +60,17 @@ html, body {
 
 .card-container {
   display: inline-block;
-  width: 24vw;
-  height: calc(24vw * var(--card-ratio));
+  /* Landscape: 4 cards per row, use height-based sizing to fit 3 rows */
+  height: 30vh;
+  width: calc(30vh / var(--card-ratio));
   margin: 0;
-  padding: 0.5vw;
+  padding: 0.5vh;
   perspective: 1000px;
 }
 
 @media (orientation: portrait) {
-  .board {
-    max-width: calc(32vw * 3);
-  }
-
   .card-container {
-    /* Use vh-based sizing to ensure 4 rows fit without scrolling */
-    /* Controls take ~6vh, so cards get ~94vh / 4 rows = ~23vh each */
+    /* Portrait: 3 cards per row, 4 rows, use vh-based sizing to fit */
     height: 22vh;
     width: calc(22vh / var(--card-ratio));
     padding: 0.5vh;
@@ -102,13 +96,21 @@ html, body {
   background-color: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 5px;
+  container-type: size;
   display: flex;
-  flex-flow: column;
+  flex-flow: row;
   height: 100%;
   inset: 0;
   justify-content: center;
+  padding: 8%;
   position: absolute;
   text-align: center;
+}
+
+@media (orientation: portrait) {
+  .face {
+    flex-flow: column;
+  }
 }
 
 .face.back {
@@ -140,10 +142,19 @@ html, body {
 }
 
 svg {
-  width: 60%;
-  height: auto;
-  aspect-ratio: 1;
-  padding: 2%;
+  /* Fixed size: 28% of card height ensures 3 shapes fit with room to spare */
+  width: 28cqh;
+  height: 28cqh;
+  flex-shrink: 0;
+}
+
+/* Fallback for browsers without container query support */
+@supports not (width: 1cqh) {
+  svg {
+    width: 25%;
+    height: auto;
+    aspect-ratio: 1;
+  }
 }
 
 .blank {
