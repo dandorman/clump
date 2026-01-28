@@ -2,11 +2,14 @@
   (:require [clump.game :as game]
             [clump.ui.utils :refer [alert class-names]]
             [reagent.core :as r]
-            [reagent.dom :as rdom]))
+            [reagent.dom.client :as rdom]))
 
 (defonce game-state (r/atom {}))
 
 (defonce game-history (r/atom []))
+
+(defonce root (-> (.getElementById js/document "app")
+                  rdom/create-root))
 
 (add-watch game-state :history
            (fn [_ _ _ n]
@@ -101,5 +104,4 @@
 (defn init []
   (when (empty? @game-state)
     (new-game!))
-  (rdom/render [game-ui]
-               (.getElementById js/document "app")))
+  (rdom/render root [game-ui]))
