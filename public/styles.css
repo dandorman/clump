@@ -9,7 +9,17 @@
   --red: rgb(153, 51, 51);
   --green: rgb(51, 153, 51);
   --blue: rgb(51, 51, 153);
-  --golden-ratio: 1.618;
+  --card-gap: 0.5rem;
+  --card-size: 23vw;
+  --card-ratio: 1.4;
+  --board-max-width: calc(var(--card-size) * 4 + var(--card-gap) * 3);
+}
+
+@media (orientation: portrait) {
+  :root {
+    --card-size: 20vh;
+    --board-max-width: calc((var(--card-size) / var(--card-ratio) * 3) + var(--card-gap) * 3);
+  }
 }
 
 * {
@@ -43,30 +53,25 @@ html, body {
 .board {
   display: flex;
   flex-flow: row wrap;
+  gap: var(--card-gap);
   justify-content: space-around;
   margin: 0 auto;
-}
-
-@media (orientation: portrait) {
-  .board {
-    max-width: calc(25vh / var(--golden-ratio) * 3);
-  }
+  max-width: var(--board-max-width);
 }
 
 .card-container {
   display: inline-block;
-  height: calc(25vw / var(--golden-ratio));
+  height: calc(var(--card-size) / var(--card-ratio));
   margin: 0;
-  padding: 0.5vw;
-  width: 25vw;
+  padding: 0;
   perspective: 1000px;
+  width: var(--card-size);
 }
 
 @media (orientation: portrait) {
   .card-container {
-    height: 25vh;
-    padding: 0.5vw;
-    width: calc(25vh / var(--golden-ratio));
+    height: var(--card-size);
+    width: calc(var(--card-size) / var(--card-ratio));
   }
 }
 
@@ -88,7 +93,7 @@ html, body {
   backface-visibility: hidden;
   background-color: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 5px;
+  border-radius: calc(var(--card-size) * 0.05);
   display: flex;
   height: 100%;
   inset: 0;
@@ -99,6 +104,7 @@ html, body {
 
 @media (orientation: portrait) {
   .face {
+    border-radius: calc(var(--card-size) / var(--card-ratio) * 0.05);
     flex-flow: column;
   }
 }
@@ -132,17 +138,9 @@ html, body {
 }
 
 svg {
-  height: calc(25vw / 4);
-  padding: 0.3vw;
-  width: calc(25vw / 4);
-}
-
-@media (orientation: portrait) {
-  svg {
-    height: calc(25vh / 4);
-    padding: 0.3vh;
-    width: calc(25vh / 4);
-  }
+  height: calc(var(--card-size) / 4);
+  padding: 0.25rem;
+  width: calc(var(--card-size) / 4);
 }
 
 .blank {
