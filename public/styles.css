@@ -30,8 +30,14 @@ html, body {
 }
 
 .controls {
+  align-items: center;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+.controls button {
+  margin: 0 0.25rem;
 }
 
 .board {
