@@ -53,11 +53,33 @@
         :board (vec board)
         :selected #{}
         :hint #{}
+        :hint-remaining #{}
         :drawn {}}
        (recur deck)))))
 
-(defn hint [game]
-  (first (clumps (:board game))))
+(defn hint [{:keys [board hint hint-remaining selected] :as game}]
+  (cond
+    ; reveal the next card from the current hint
+    (seq hint-remaining)
+    (let [next-hint (-> hint-remaining shuffle first)]
+      (-> game
+          (update :hint conj next-hint)
+          (update :hint-remaining disj next-hint)
+          (assoc :selected (set/intersection hint selected))))
+
+    ; revealed entire hint; clear hint
+    (seq hint)
+    (-> game
+        (assoc :hint #{})
+        (assoc :hint-remaining #{}))
+
+    ; pick a new hint
+    :else
+    (let [[hint & hint-remaining] (-> board clumps shuffle first shuffle)]
+      (-> game
+          (assoc :hint #{hint})
+          (assoc :hint-remaining (into #{} hint-remaining))
+          (assoc :selected #{})))))
 
 (defn toggle-card [game card]
   (let [selected (:selected game)]
@@ -86,6 +108,7 @@
           (-> game
               (replace-clump selected)
               (assoc :hint #{})
+              (assoc :hint-remaining #{})
               (assoc :score (inc score)))
           (assoc game :score (dec score) :selected #{})))
       game)))

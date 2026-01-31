@@ -27,11 +27,7 @@
     (reset! game-state (last @game-history))))
 
 (defn hint! []
-  (let [clump (game/hint @game-state)]
-    (assert clump "There must be a clump.")
-    (swap! game-state #(-> %
-                           (assoc :hint (set clump))
-                           (assoc :selected #{})))))
+  (swap! game-state game/hint))
 
 (defn card-selected! [card]
   (swap! game-state #(-> (game/card-selected % card)
