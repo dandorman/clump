@@ -91,26 +91,27 @@
   (let [game (draw game)
         old->new (zipmap (sort-by (partial board-position (:board game)) clump)
                          (sort-by #(clump %) (:draw game)))
-        new->old (zipmap (vals old->new) (keys old->new))]
+        new->old (set/map-invert old->new)]
     (-> game
         (dissoc :draw)
         (assoc :selected #{}
                :drawn new->old
-               :board (vec (take 12 (map #(get old->new % %) (:board game))))))))
+               :board (mapv #(get old->new % %) (:board game))))))
 
 (defn card-selected [game card]
-  (let [game (assoc (toggle-card game card) :drawn {})
-        selected (:selected game)
-        game (cond-> game (not ((:hint game) card)) (assoc :hint #{}))]
+  (let [{:keys [hint hint-remaining selected] :as game} (assoc (toggle-card game card) :drawn {})
+        game (cond-> game
+                     (not (contains? (set/union hint hint-remaining) card))
+                     (assoc :hint #{} :hint-remaining #{}))]
     (if (= 3 (count selected))
-      (let [score (:score game)]
-        (if (clump? (keys traits) selected)
-          (-> game
-              (replace-clump selected)
-              (assoc :hint #{})
-              (assoc :hint-remaining #{})
-              (assoc :score (inc score)))
-          (assoc game :score (dec score) :selected #{})))
+      (if (clump? (keys traits) selected)
+        (-> game
+            (replace-clump selected)
+            (assoc :hint #{} :hint-remaining #{})
+            (update :score inc))
+        (-> game
+            (assoc :selected #{})
+            (update :score dec)))
       game)))
 
 (defn over? [game]
